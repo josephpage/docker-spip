@@ -8,6 +8,7 @@ RUN apt-get update && apt-get install -y \
 		php5-gd \
 		php5-mysql \
 		wget \
+		unzip \
 	&& rm -rf /var/lib/apt/lists/*
 RUN a2enmod rewrite
 
@@ -36,6 +37,12 @@ VOLUME /var/www/html
 WORKDIR /var/www/html
 
 # ToDo : insert SPIP stuff
+RUN curl -SL http://files.spip.org/spip/stable/spip-3.0.zip && \
+	unzip spip-3.0.zip && \
+	chown -R www-data:www-data . && \
+	chmod -R 550 . && \
+	chmod -R 750 IMG/ tmp/ local/ plugins/auto/
+
 
 EXPOSE 80
 CMD ["apache2", "-DFOREGROUND"]
